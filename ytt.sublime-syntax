@@ -1,0 +1,49 @@
+%YAML 1.2
+---
+# https://www.sublimetext.com/docs/syntax.html
+# https://www.sublimetext.com/docs/scope_naming.html
+name: ytt
+scope: source.yaml.ytt
+version: 2
+
+extends: Packages/YAML/YAML.sublime-syntax
+file_extensions: [ytt, yaml]
+first_line_match: ^#@
+
+contexts:
+  comment-begin:
+    - meta_include_prototype: false
+    - match: '#!'
+      captures:
+        0: punctuation.definition.comment.ytt
+      set: ytt-comment
+    - match: '(#@)(\S*)'
+      captures:
+        1: support.class.ytt
+        2: support.class.ytt
+      set: ytt-annotation
+    - match: \#
+      scope: punctuation.definition.comment.line.number-sign.yaml
+      set: comment-body
+
+  ytt-annotation:
+    - match: \n
+      pop: true
+    - include: ytt-oneliner-end
+    - include: ytt-end
+    - include: ytt-def
+    # TODO: use `embed: scope:source.starlark` for this?
+    - include: scope:source.starlark
+  ytt-comment:
+    - meta_scope: comment.line.number-sign.ytt
+    - match: \n
+      pop: true
+  ytt-def:
+    - match: '\s*\b(def)\s+(?=[[:alpha:]_][[:word:]]*\s*\()'
+      scope: keyword.control.flow.ytt
+  ytt-end:
+    - match: \s+end$
+      scope: keyword.control.flow.ytt
+  ytt-oneliner-end:
+    - match: (for|if|def)/end
+      scope: keyword.control.flow.ytt
