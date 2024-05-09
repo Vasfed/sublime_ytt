@@ -1,0 +1,25 @@
+#@ load("@ytt:data", "data")
+
+#@ def labels():
+app: echo
+org: test
+#@ end
+
+#@ def name(echo):
+#@   return "echo-"+echo.name
+#@ end
+
+kind: Pod
+apiVersion: v1
+metadata:
+  name: echo-app
+  labels: #@ labels()
+spec:
+  containers:
+  #@ for/end echo in data.values.echos:
+  - name: #@ name(echo)
+    image: hashicorp/http-echo
+    args:
+    - #@ "-listen=:" + str(echo.port)
+    - #@ "-text=" + echo.text
+
