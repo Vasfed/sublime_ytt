@@ -29,11 +29,11 @@ The recommended way is to use [Package Control](https://packagecontrol.io/instal
 Use `Set syntax: ytt` to apply to current file. 
 
 Since ytt files are also yaml files default syntax detector will use that, so you can use [ApplySyntax package](https://github.com/facelessuser/ApplySyntax) with following rule added to `syntaxes`:
-
+(syntax name may be `User/ytt/ytt` depending on how it was installed)
 ```json
     "syntaxes": [
         {
-            "syntax": "User/ytt/ytt",
+            "syntax": "ytt/ytt",
             "match": "all",
             "rules": [
                 { "file_path": ".*\\.ya?ml$" },
