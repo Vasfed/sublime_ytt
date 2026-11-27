@@ -32,7 +32,15 @@ contexts:
     - include: ytt-oneliner-end
     - include: ytt-end
     - include: ytt-def
-    # TODO: use `embed: scope:source.starlark` for this?
+    - match: (?=\S)
+      push: ytt-starlark
+      with_prototype:
+        - match: ^\s*(#@)
+          captures:
+            1: support.class.ytt
+  ytt-starlark:
+    - match: (?=\n)
+      pop: true
     - include: scope:source.starlark
   ytt-comment:
     - meta_scope: comment.line.number-sign.ytt
